@@ -17,8 +17,8 @@ provider "aws" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc
 # * dns hostname
 resource "aws_vpc" "myVPC" {
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
+  cidr_block           = "10.0.0.0/16"
+  instance_tenancy     = "default"
   enable_dns_hostnames = true
 
   tags = {
@@ -39,16 +39,35 @@ resource "aws_internet_gateway" "myIGW" {
 # 3) PubSubnet 생성
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet
 # 퍼블릭 IPv4 주소 자동 할당 활성화
-resource "aws_subnet" "myPubSubnet" {
-  vpc_id     = aws_vpc.myVPC.id
-  cidr_block = "10.0.1.0/24"
+resource "aws_subnet" "myPubSN" {
+  vpc_id                  = aws_vpc.myVPC.id
+  cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "myPubSubnet"
+    Name = "myPubSN"
   }
 }
 
 # 4) PubRT 생성과 설정, 연결
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table
+# Default route -> myIGW
+resource "aws_route_table" "myPubRT" {
+  vpc_id = aws_vpc.myVPC.id
 
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.myIGW.id
+  }
 
+  tags = {
+    Name = "myPubRT"
+  }
+}
+
+# myPubRT -> myPubSN 연결
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association
+resource "aws_route_table_association" "myPubRTassoc" {
+  subnet_id      = aws_subnet.myPubSN.id
+  route_table_id = aws_route_table.myPubRT.id
+}
