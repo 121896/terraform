@@ -76,7 +76,7 @@ resource "aws_security_group" "mySG2" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_22-2" {
+resource "aws_vpc_security_group_ingress_rule" "mySG2_22" {
   security_group_id = aws_security_group.mySG2.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
@@ -84,7 +84,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_22-2" {
   ip_protocol       = "tcp"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_80-2" {
+resource "aws_vpc_security_group_ingress_rule" "mySG2_80" {
   security_group_id = aws_security_group.mySG2.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -92,7 +92,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_80-2" {
   ip_protocol       = "tcp"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_443-2" {
+resource "aws_vpc_security_group_ingress_rule" "mySG2_443" {
   security_group_id = aws_security_group.mySG2.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
@@ -100,7 +100,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_443-2" {
   ip_protocol       = "tcp"
 }
 
-resource "aws_vpc_security_group_egress_rule" "allow_all-2" {
+resource "aws_vpc_security_group_egress_rule" "mySG2_allow_all" {
   security_group_id = aws_security_group.mySG2.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
