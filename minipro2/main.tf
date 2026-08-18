@@ -74,7 +74,7 @@ module "db" {
 
   engine         = "aurora-mysql"
   engine_version = "8.0.mysql_aurora.3.04.1"
-  
+
   instance_class = "db.t3.medium"
   instances = {
     1 = { instance_class = "db.t3.medium" }
@@ -85,10 +85,11 @@ module "db" {
   db_subnet_group_name   = module.net.db_subnet_group_name
   vpc_security_group_ids = [module.net.db_sg_id]
 
-  master_username     = var.db_username
-  master_password     = var.db_password
-  database_name       = var.db_name
-  skip_final_snapshot = true
+  master_username             = var.db_username
+  master_password             = var.db_password
+  database_name               = var.db_name
+  skip_final_snapshot         = true
+  manage_master_user_password = false
 }
 
 # 4. Custom Module: ec2 (EC2 생성)
@@ -101,8 +102,8 @@ module "ec2" {
   ec2_sg_id         = module.net.ec2_sg_id
   target_group_arns = module.alb.target_group_arns
 
-  db_endpoint       = module.db.cluster_endpoint
-  db_username       = var.db_username
-  db_password       = var.db_password
-  db_name           = var.db_name
+  db_endpoint = module.db.cluster_endpoint
+  db_username = var.db_username
+  db_password = var.db_password
+  db_name     = var.db_name
 }
