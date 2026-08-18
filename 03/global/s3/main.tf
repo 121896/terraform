@@ -5,6 +5,7 @@ provider "aws" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 resource "aws_s3_bucket" "mybucket" {
   bucket = "bucket-yjh-1218"
+  force_destroy = true
 
   tags = {
     Name = "mybucket"
